@@ -6,11 +6,11 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/p/parquet/parquet-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/p/parquet/parquet-{{ version }}.tar.gz
   sha256: fb1c90768c1b9159d4d6a9b3112ea8107b0b46d7491c5ac452ba7350f333bf0a
 
 build:
-  number: 0
+  number: 1
   noarch: python
   script: {{ PYTHON }} -m pip install . --no-deps -vv
   entry_points:
@@ -18,31 +18,18 @@ build:
 
 requirements:
   host:
-    - python
+    - python {{ python_min }}
     - pip
+    - setuptools
   run:
-    - python
+    - python >={{ python_min }}
     - thriftpy2
 
 test:
+  requires:
+    - python {{ python_min }}
   imports:
     - parquet
-
-# Top part of recipe is the same as a normal recipe. The following is only
-# needed for the alias.
-outputs:
-  # Tells conda-build that the top level is an output
-  - name: {{ name|lower }}
-  # Defines the alias a noarch package that only depends on python
-  # and the top-level
-  - name: parquet_python
-    build:
-      noarch: python  # not noarch: generic because build tag formatting
-    requirements:
-      host:
-        - python  # required to squash jinja error about undefined PYTHON
-      run:
-        - {{ pin_subpackage( name|lower, exact=True) }}
 
 about:
   home: https://github.com/jcrobak/parquet-python
