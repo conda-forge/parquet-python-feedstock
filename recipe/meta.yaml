@@ -20,6 +20,7 @@ requirements:
   host:
     - python {{ python_min }}
     - pip
+    - setuptools
   run:
     - python >={{ python_min }}
     - thriftpy2
@@ -44,6 +45,7 @@ outputs:
       host:
         - python {{ python_min }}  # required to squash jinja error about undefined PYTHON
       run:
+        - python >={{ python_min }}
         - {{ pin_subpackage( name|lower, exact=True) }}
 
 about:
