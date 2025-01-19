@@ -31,23 +31,6 @@ test:
   imports:
     - parquet
 
-# Top part of recipe is the same as a normal recipe. The following is only
-# needed for the alias.
-outputs:
-  # Tells conda-build that the top level is an output
-  - name: {{ name|lower }}
-  # Defines the alias a noarch package that only depends on python
-  # and the top-level
-  - name: parquet_python
-    build:
-      noarch: python  # not noarch: generic because build tag formatting
-    requirements:
-      host:
-        - python {{ python_min }}  # required to squash jinja error about undefined PYTHON
-      run:
-        - python >={{ python_min }}
-        - {{ pin_subpackage( name|lower, exact=True) }}
-
 about:
   home: https://github.com/jcrobak/parquet-python
   license: Apache-2.0
